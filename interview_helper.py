@@ -54,18 +54,20 @@ def main():
         # Display evaluation summary
         evaluation_summary = ""
         valid_scores = []
+
+        # Build evaluation text
         for criterion, score in ratings.items():
             evaluation_summary += f"{criterion}: {score}\n"
             if score != "N/A":
                 valid_scores.append(score)
-        
-        # Calculate average rating
+
+        # Calculate average score
         if valid_scores:
             average_score = sum(valid_scores) / len(valid_scores)
         else:
             average_score = 0
 
-        # Map average score to rating description
+        # Map average score to a descriptive rating
         rating_description = {
             (0, 1): "Poor",
             (1, 2): "Needs Improvement",
@@ -74,15 +76,18 @@ def main():
             (4, 5): "Very Good",
             (5, 6): "Excellent"
         }
-        average_rating_text = next(
+        overall_rating = next(
             (text for (low, high), text in rating_description.items() if low <= average_score < high),
             "No Rating"
         )
 
+        # Append average score and overall rating to the summary
+        evaluation_summary += f"\nAverage Score: {average_score:.2f}\n"
+        evaluation_summary += f"Overall Rating: {overall_rating}\n"
+
         # Display summary in a textbox
-        st.text_area("Evaluation Summary", value=evaluation_summary, height=300)
-        st.write(f"**Average Score (Excluding 'N/A'):** {average_score:.2f}")
-        st.write(f"**Overall Rating:** {average_rating_text}")
+        st.text_area("Evaluation Summary", value=evaluation_summary, height=400)
+
 
 if __name__ == "__main__":
     main()
