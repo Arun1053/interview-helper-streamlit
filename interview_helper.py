@@ -37,13 +37,18 @@ def main():
     # Initialize ratings dictionary
     ratings = {}
 
+    # Define options as strings to avoid type errors
+    options = ["N/A", "0", "1", "2", "3", "4", "5"]
+
     # Generate rating fields for each criterion
     for criterion in criteria:
-        ratings[criterion] = st.selectbox(
+        selected = st.selectbox(
             f"{criterion}:",
-            options=["N/A", 0, 1, 2, 3, 4, 5],
+            options=options,
             format_func=lambda x: "Not Applicable" if x == "N/A" else x
         )
+        # Store value as integer if not "N/A"
+        ratings[criterion] = selected if selected == "N/A" else int(selected)
 
     st.write("---")
 
@@ -87,7 +92,6 @@ def main():
 
         # Display summary in a textbox
         st.text_area("Evaluation Summary", value=evaluation_summary, height=400)
-
 
 if __name__ == "__main__":
     main()
